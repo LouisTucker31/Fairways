@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Fairway</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="app-logo">
+        <span class="logo-icon">⛳</span>
+        <span class="logo-text">Fairway</span>
+      </div>
+      <nav class="pill-nav" id="pillNav">
+        <button class="pill-btn active" data-page="dashboard">Dashboard</button>
+        <button class="pill-btn" data-page="scorecards">Scorecards</button>
+        <button class="pill-btn" data-page="stats">Stats</button>
+        <div class="pill-slider" id="pillSlider"></div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Pages -->
+  <main class="app-main">
+
+    <!-- DASHBOARD PAGE -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-content">
+
+        <div class="greeting-block">
+          <p class="greeting-sub">Welcome back</p>
+          <h1 class="greeting-title">Your Round,<br>Your Game.</h1>
+        </div>
+
+        <div class="quick-action-card" id="startRoundBtn">
+          <div class="qa-icon">+</div>
+          <div class="qa-text">
+            <span class="qa-title">New Round</span>
+            <span class="qa-sub">Start tracking your scorecard</span>
+          </div>
+          <div class="qa-arrow">›</div>
+        </div>
+
+        <div class="section-title">Recent Rounds</div>
+
+        <div class="rounds-list" id="recentRoundsList">
+          <div class="empty-state">
+            <div class="empty-icon">🏌️</div>
+            <p>No rounds yet. Hit the course!</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCORECARDS PAGE -->
+    <section class="page" id="page-scorecards">
+      <div class="page-content">
+
+        <div class="page-header-block">
+          <h2 class="page-title">Scorecards</h2>
+          <button class="icon-btn" id="newRoundBtnSC">
+            <span>+</span>
+          </button>
+        </div>
+
+        <div class="filter-row">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="18">18 Holes</button>
+          <button class="filter-chip" data-filter="9">9 Holes</button>
+        </div>
+
+        <div class="scorecards-list" id="scorecardsList">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <p>No scorecards yet.<br>Start a new round to begin.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STATS PAGE -->
+    <section class="page" id="page-stats">
+      <div class="page-content">
+
+        <div class="page-header-block">
+          <h2 class="page-title">Stats</h2>
+        </div>
+
+        <div class="stats-empty" id="statsEmpty">
+          <div class="empty-icon">📊</div>
+          <p>Play some rounds to<br>unlock your stats.</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid" style="display:none;">
+          <div class="stat-card">
+            <span class="stat-label">Avg Score</span>
+            <span class="stat-value" id="statAvgScore">—</span>
+            <span class="stat-sub">vs par</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Best Round</span>
+            <span class="stat-value" id="statBestRound">—</span>
+            <span class="stat-sub">gross score</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Rounds</span>
+            <span class="stat-value" id="statRoundsPlayed">0</span>
+            <span class="stat-sub">played</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Handicap</span>
+            <span class="stat-value" id="statHandicap">—</span>
+            <span class="stat-sub">index</span>
+          </div>
+        </div>
+
+        <div class="section-title" id="statsSectionTitle" style="display:none; margin-top:24px;">Score Trend</div>
+        <div class="trend-chart" id="trendChart" style="display:none;"></div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- NEW ROUND MODAL -->
+  <div class="modal-overlay" id="newRoundModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title">New Round</h3>
+
+      <div class="form-group">
+        <label class="form-label">Course Name</label>
+        <input class="form-input" type="text" id="courseName" placeholder="e.g. St Andrews Old Course" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label class="form-label">Date</label>
+          <input class="form-input" type="date" id="roundDate" />
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Holes</label>
+          <select class="form-input" id="roundHoles">
+            <option value="18">18 Holes</option>
+            <option value="9">9 Holes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Course Par</label>
+        <input class="form-input" type="number" id="coursePar" placeholder="72" min="27" max="75" />
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancelRoundBtn">Cancel</button>
+        <button class="btn-primary" id="createRoundBtn">Create Scorecard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORECARD DETAIL MODAL -->
+  <div class="modal-overlay" id="scorecardModal">
+    <div class="modal-sheet scorecard-sheet">
+      <div class="modal-handle"></div>
+      <div class="sc-modal-header">
+        <div>
+          <h3 class="modal-title" id="scModalCourse">Course Name</h3>
+          <p class="sc-modal-date" id="scModalDate">Date</p>
+        </div>
+        <button class="close-btn" id="closeSCModal">✕</button>
+      </div>
+
+      <div class="sc-totals-row">
+        <div class="sc-total-chip">
+          <span class="sc-total-label">Score</span>
+          <span class="sc-total-val" id="scTotalScore">0</span>
+        </div>
+        <div class="sc-total-chip">
+          <span class="sc-total-label">Par</span>
+          <span class="sc-total-val" id="scTotalPar">—</span>
+        </div>
+        <div class="sc-total-chip">
+          <span class="sc-total-label">+/−</span>
+          <span class="sc-total-val" id="scTotalDiff">—</span>
+        </div>
+      </div>
+
+      <div class="hole-grid" id="holeGrid"></div>
+
+      <div class="modal-actions">
+        <button class="btn-danger" id="deleteRoundBtn">Delete Round</button>
+        <button class="btn-primary" id="saveRoundBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
