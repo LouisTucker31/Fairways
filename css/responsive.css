@@ -43,6 +43,13 @@
   }
 }
 
+/* Prevent modal jumping too high when keyboard opens on iOS */
+@media (max-width: 768px) {
+  .modal {
+    max-height: 75dvh;
+  }
+}
+
 /* Tablet / desktop — cap and centre */
 @media (min-width: 540px) {
   .app {

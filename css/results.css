@@ -71,9 +71,8 @@
   flex-direction: column;
   gap: 0;
   width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  padding-left: 36px;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .medal-row {
@@ -82,10 +81,10 @@
   justify-content: center;
   gap: 20px;
   padding: 22px 0;
-  border-bottom: 1px solid var(--border-light);
+  padding-left: 36px;
 }
 
-.medal-row:first-child {
+.medal-row + .medal-row {
   border-top: 1px solid var(--border-light);
 }
 
