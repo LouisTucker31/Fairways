@@ -18,14 +18,17 @@
     <header class="stats-header">
       <a href="launcher.html" class="header-link">
         <h1 class="stats-title">Stats</h1>
+        <p class="stats-sub">Track your game, find your edge.</p>
       </a>
-      <select class="stats-filter" id="statsFilter">
-        <option value="all">All Time</option>
-        <option value="year">This Year</option>
-        <option value="last20">Last 20 Rounds</option>
-        <option value="last10">Last 10 Rounds</option>
-        <option value="last5">Last 5 Rounds</option>
-      </select>
+      <div class="stats-filter-wrap">
+        <select class="stats-filter" id="statsFilter">
+          <option value="all">All Time</option>
+          <option value="year">This Year</option>
+          <option value="last20">Last 20 Rounds</option>
+          <option value="last10">Last 10 Rounds</option>
+          <option value="last5">Last 5 Rounds</option>
+        </select>
+      </div>
     </header>
 
     <!-- Overview -->
@@ -122,7 +125,7 @@
 
     </section>
 
-  </di>
+  </div>
 
   <script src="js/stats-data.js"></script>
   <script src="js/stats-calc.js"></script>
