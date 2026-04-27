@@ -108,6 +108,7 @@
     const savedHI = Storage.getHI();
     if (savedHI !== null) fieldHI.value = savedHI;
     fieldHoles.value = '18';
+    updateModalActions(null);
     UI.openModal();
   });
 
@@ -125,14 +126,15 @@
     if (savedHI !== null) fieldHI.value = savedHI;
     if (currentCourse) {
       prefillModal(currentCourse);
-      // Re-show estimated warning if applicable after modal closes
       const hi = Storage.getHI();
       if (hi !== null) {
         UI.showResults(currentCourse, hi, () => openModalForEstimated(currentCourse, hi));
       }
+      updateModalActions(currentCourse);
     } else {
       clearModalForm();
       if (savedHI !== null) fieldHI.value = savedHI;
+      updateModalActions(null);
     }
     modalError.classList.add('hidden');
     UI.openModal();
@@ -393,7 +395,29 @@
     }
   }
 
+  function updateModalActions(course) {
+    const actions = document.getElementById('modalActions');
+    const existing = document.getElementById('deleteBtn');
+    if (existing) existing.remove();
+
+    if (course?._source === 'manual') {
+      const deleteBtn = document.createElement('button');
+      deleteBtn.id        = 'deleteBtn';
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.addEventListener('click', () => {
+        if (confirm(`Delete "${course.name}"?`)) {
+          Storage.deleteCourse(course.name);
+          currentCourse = null;
+          searchInput.value = '';
+          UI.closeModal();
+          UI.hideResults();
+        }
+      });
+      actions.insertBefore(deleteBtn, actions.firstChild);
+    }
+  }
+
   // ── Start ──
   init();
-
 })();
