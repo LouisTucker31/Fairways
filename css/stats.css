@@ -1,0 +1,75 @@
+/* ── Stats app ── */
+.stats-app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 max(20px, env(safe-area-inset-left)) max(80px, calc(env(safe-area-inset-bottom) + 60px));
+  padding-left:  max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
+
+/* ── Header ── */
+.stats-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: max(48px, calc(env(safe-area-inset-top) + 24px)) 0 32px;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+
+.back-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.back-btn:hover {
+  background: var(--bg);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.stats-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ── Empty state ── */
+.stats-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 55vh;
+  gap: 14px;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.stats-empty-icon {
+  font-size: 2.8rem;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.stats-empty-text {
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.6;
+}

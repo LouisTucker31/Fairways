@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Medal Golf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Medal Golf" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <meta name="theme-color" content="#f5f0e8" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/launcher.css" />
+</head>
+<body class="launcher-body">
+
+  <div class="launcher">
+
+    <a href="stats.html" class="launcher-tile launcher-tile--stats">
+      <div class="launcher-tile-inner">
+        <span class="launcher-label">Stats</span>
+        <span class="launcher-desc">Track your round</span>
+      </div>
+      <svg class="launcher-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+    <div class="launcher-divider"></div>
+
+    <a href="medal.html" class="launcher-tile launcher-tile--medal">
+      <div class="launcher-tile-inner">
+        <span class="launcher-label">Medal</span>
+        <span class="launcher-desc">See your targets</span>
+      </div>
+      <svg class="launcher-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+
+</body>
+</html>

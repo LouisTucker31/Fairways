@@ -1,0 +1,89 @@
+/* ── Launcher ── */
+.launcher-body {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+.launcher {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100%;
+}
+
+.launcher-tile {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(40px, calc(env(safe-area-inset-top) + 32px)) 36px
+           max(40px, calc(env(safe-area-inset-bottom) + 32px));
+  text-decoration: none;
+  position: relative;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.launcher-tile:active {
+  opacity: 0.7;
+}
+
+.launcher-tile--stats {
+  background: var(--accent);
+  color: #fff;
+}
+
+.launcher-tile--medal {
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+.launcher-tile-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.launcher-label {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.launcher-tile--stats .launcher-label {
+  color: #fff;
+}
+
+.launcher-tile--medal .launcher-label {
+  color: var(--text-primary);
+}
+
+.launcher-desc {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.launcher-tile--stats .launcher-desc {
+  color: rgba(255,255,255,0.6);
+}
+
+.launcher-tile--medal .launcher-desc {
+  color: var(--text-tertiary);
+}
+
+.launcher-arrow {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  opacity: 0.4;
+}
+
+.launcher-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
