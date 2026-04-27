@@ -18,17 +18,7 @@
     StatsUI.renderShots(shots, band, 'shotChart');
     StatsUI.renderRecoveries(rec, band, 'recoveryChart');
 
-    // AI summaries — only if enough data
-    if (rounds.length >= 3 && handicap !== null) {
-      StatsUI.renderAI('shot',     shots, handicap, StatsData.KEYS.AI_SHOT,     'aiShot');
-      StatsUI.renderAI('recovery', rec,   handicap, StatsData.KEYS.AI_RECOVERY, 'aiRecovery');
-    } else {
-      const aiEls = ['aiShot', 'aiRecovery'];
-      aiEls.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = '';
-      });
-    }
+
   }
 
   filterEl?.addEventListener('change', () => {
