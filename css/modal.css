@@ -1,7 +1,8 @@
 /* ── Modal backdrop ── */
 .modal-backdrop {
   position: fixed;
-  inset: 0;
+  inset: -100px 0 0 0;
+  padding-top: 100px;
   background: rgba(20, 18, 14, 0.4);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -27,7 +28,6 @@
   animation: sheetUp 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
   max-height: 92dvh;
   overflow-y: auto;
-  touch-action: pan-x;
 }
 
 .modal::before {
