@@ -66,11 +66,17 @@ const API = (() => {
     const female = apiCourse.tees?.female || [];
     const all    = [...male, ...female];
 
+    // Deduplicate by tee name — keep first occurrence (longest yardage wins after sort)
+    const seen = new Set();
     return all
-      // Exclude winter tees
       .filter(t => !t.tee_name?.toLowerCase().includes('winter'))
-      // Sort by total_yards descending
       .sort((a, b) => (b.total_yards || 0) - (a.total_yards || 0))
+      .filter(t => {
+        const key = t.tee_name?.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
       .map(t => ({
         tee_name:            t.tee_name || 'Standard',
         course_rating:       t.course_rating,
