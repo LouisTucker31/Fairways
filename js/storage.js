@@ -48,5 +48,21 @@ const Storage = (() => {
     localStorage.setItem(STORAGE_KEYS.HI, String(hi));
   }
 
-  return { getCourses, saveCourse, searchCourses, getHI, saveHI, deleteCourse };
+  function getLastCourse() {
+    try {
+      return JSON.parse(localStorage.getItem('handicap_last_course')) || null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveLastCourse(course) {
+    localStorage.setItem('handicap_last_course', JSON.stringify(course));
+  }
+
+  function clearLastCourse() {
+    localStorage.removeItem('handicap_last_course');
+  }
+
+  return { getCourses, saveCourse, searchCourses, getHI, saveHI, deleteCourse, getLastCourse, saveLastCourse, clearLastCourse };
 })();

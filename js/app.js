@@ -23,8 +23,14 @@
   // ── Init ──
   function init() {
     const savedHI = Storage.getHI();
-    if (savedHI !== null) {
-      fieldHI.value = savedHI;
+    if (savedHI !== null) fieldHI.value = savedHI;
+
+    // Restore last viewed course
+    const last = Storage.getLastCourse();
+    if (last && savedHI !== null) {
+      currentCourse     = last;
+      searchInput.value = last.name;
+      UI.showResults(last, savedHI, () => openModalForEstimated(last, savedHI));
     }
   }
 
@@ -36,10 +42,20 @@
     if (q.length === 0) {
       UI.hideDropdown();
       UI.hideResults();
+      Storage.clearLastCourse();
       currentCourse = null;
       return;
     }
     searchTimeout = setTimeout(async () => {
+      // Magic keywords — show all saved courses
+      const magicPhrases = ['my courses', 'saved courses', 'saved', 'my saved'];
+      if (magicPhrases.includes(q.toLowerCase())) {
+        const all = Storage.getCourses();
+        UI.showDropdown(all.length > 0 ? all : [], onCourseSelected);
+        UI.hideSearchSpinner();
+        return;
+      }
+
       // Always show local results immediately
       const local = Storage.searchCourses(q);
       if (local.length > 0) UI.showDropdown(local, onCourseSelected);
@@ -81,7 +97,6 @@
   });
 
   function onCourseSelected(course) {
-    // Always default to 18 holes — API hole count is unreliable
     course._fullPar  = course.par;
     course._apiHoles = 18;
     course.holes     = '18';
@@ -90,6 +105,7 @@
 
     const hi = Storage.getHI();
     if (hi !== null) {
+      Storage.saveLastCourse(course);
       UI.showResults(course, hi, () => openModalForEstimated(course, hi));
     } else {
       prefillModal(course);
@@ -258,6 +274,7 @@
       .find(c => c.name.toLowerCase() === name.toLowerCase()) || course;
     currentCourse.holes = holes;
     searchInput.value = currentCourse.name;
+    Storage.saveLastCourse(currentCourse);
     UI.closeModal();
     UI.showResults(currentCourse, hi, () => openModalForEstimated(currentCourse, hi));
   }
