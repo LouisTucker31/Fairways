@@ -75,6 +75,11 @@ const UI = (() => {
     hiEditBtn.classList.remove('hidden');
   }
 
+  function showHIButton(hi) {
+    hiEditValue.textContent = hi ?? '—';
+    hiEditBtn.classList.remove('hidden');
+  }
+
   function showDropdown(courses, onSelect) {
     searchDropdown.innerHTML = '';
 
@@ -131,5 +136,5 @@ const UI = (() => {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  return { showResults, hideResults, showDropdown, hideDropdown, openModal, closeModal, updateHIButton, showSearchSpinner, hideSearchSpinner, getStats };
+  return { showResults, hideResults, showDropdown, hideDropdown, openModal, closeModal, updateHIButton, showHIButton, showSearchSpinner, hideSearchSpinner, getStats };
 })();

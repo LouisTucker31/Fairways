@@ -25,6 +25,9 @@
     const savedHI = Storage.getHI();
     if (savedHI !== null) fieldHI.value = savedHI;
 
+    // Always show HI pill
+    UI.showHIButton(savedHI);
+
     // Restore last viewed course
     const last = Storage.getLastCourse();
     if (last && savedHI !== null) {
@@ -151,6 +154,8 @@
       clearModalForm();
       if (savedHI !== null) fieldHI.value = savedHI;
       updateModalActions(null);
+      // Flag that this is a HI-only edit
+      fieldName.placeholder = 'No course selected';
     }
     modalError.classList.add('hidden');
     UI.openModal();
@@ -168,6 +173,18 @@
     modalError.textContent = 'Please fill in all fields.';
     modalError.classList.add('hidden');
     document.getElementById('estimatedNote').classList.add('hidden');
+
+    // HI-only save — no course loaded
+    if (!currentCourse && !name) {
+      if (isNaN(hi)) {
+        modalError.classList.remove('hidden');
+        return;
+      }
+      Storage.saveHI(hi);
+      UI.showHIButton(hi);
+      UI.closeModal();
+      return;
+    }
 
     if (!name || isNaN(par) || isNaN(cr) || isNaN(sr) || isNaN(hi)) {
       modalError.classList.remove('hidden');
