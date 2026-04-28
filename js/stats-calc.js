@@ -103,12 +103,12 @@ const StatsCalc = (() => {
 
     // Only use rounds that have breakdown data
     const withBreakdown = rounds.filter(r =>
-      r.eagleOrBetter !== null &&
-      r.birdies !== null &&
-      r.pars !== null &&
-      r.bogeys !== null &&
-      r.doubles !== null &&
-      r.tripleOrWorse !== null
+      r.eagleOrBetter != null &&
+      r.birdies != null &&
+      r.pars != null &&
+      r.bogeys != null &&
+      r.doubles != null &&
+      r.tripleOrWorse != null
     );
 
     if (!withBreakdown.length) {

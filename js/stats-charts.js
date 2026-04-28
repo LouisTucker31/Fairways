@@ -96,7 +96,7 @@ const StatsCharts = (() => {
       const bandVal = bandAverages[item.key] ?? 0;
 
       // User bar
-      const userH   = (userVal / maxVal) * chartH;
+      const userH   = Math.max((userVal / maxVal) * chartH, userVal > 0 ? 3 : 0);
       const userBar = document.createElementNS(svgNS, 'rect');
       userBar.setAttribute('x', x);
       userBar.setAttribute('y', padT + chartH - userH);
@@ -109,7 +109,7 @@ const StatsCharts = (() => {
       svg.appendChild(userBar);
 
       // Band bar
-      const bandH   = (bandVal / maxVal) * chartH;
+      const bandH   = Math.max((bandVal / maxVal) * chartH, bandVal > 0 ? 3 : 0);
       const bandBar = document.createElementNS(svgNS, 'rect');
       bandBar.setAttribute('x', x + barW + gap);
       bandBar.setAttribute('y', padT + chartH - bandH);
