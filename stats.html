@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/stats.css" />
+  <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/stats-input.css" />
 </head>
 <body>
@@ -130,9 +131,8 @@
 
   <!-- Add Round floating button -->
   <button class="add-round-btn" id="addRoundBtn" title="Add round">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-      <line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/>
-    </svg>
+    <span class="add-round-label">Round</span>
+    <span class="add-round-icon">+</span>
   </button>
 
   <!-- Add Round Modal -->
@@ -171,6 +171,11 @@
           <select class="field-input field-select" id="roundTeeSelect"></select>
         </div>
 
+        <div class="field-group">
+          <label class="field-label">Date</label>
+          <input class="field-input" type="date" id="roundDate" />
+        </div>
+
         <div class="field-row">
           <div class="field-group">
             <label class="field-label">Holes</label>
@@ -181,14 +186,9 @@
             </select>
           </div>
           <div class="field-group">
-            <label class="field-label">Date</label>
-            <input class="field-input" type="date" id="roundDate" />
+            <label class="field-label">Gross Score</label>
+            <input class="field-input" type="number" id="roundGross" placeholder="89" min="50" max="200" />
           </div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Gross Score</label>
-          <input class="field-input" type="number" id="roundGross" placeholder="89" min="50" max="200" />
         </div>
 
         <p class="stats-modal-error" id="statsModalError"></p>
