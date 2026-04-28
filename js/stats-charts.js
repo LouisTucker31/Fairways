@@ -12,17 +12,23 @@ const StatsCharts = (() => {
       return;
     }
 
-    const svgNS  = 'http://www.w3.org/2000/svg';
-    const width  = container.clientWidth || 320;
-    const height = 180;
-    const barW   = 28;
-    const groupW = 80;
-    const padL   = 32;
-    const padB   = 40;
-    const padT   = 16;
-    const chartH = height - padB - padT;
+    container.innerHTML = '';
 
-    // Find max value for scale
+    const svgNS   = 'http://www.w3.org/2000/svg';
+    const width   = container.clientWidth || 320;
+    const height  = 180;
+    const barW    = 28;
+    const gap     = 8;
+    const groupW  = barW * 2 + gap + 24;
+    const totalW  = items.length * groupW;
+    const padL    = 32;
+    const padB    = 40;
+    const padT    = 16;
+    const chartH  = height - padB - padT;
+
+    // Centre the bars
+    const startX  = padL + Math.max(0, (width - padL - totalW) / 2);
+
     const allVals = items.flatMap(item => [
       userStats[item.key] ?? 0,
       bandAverages[item.key] ?? 0
@@ -33,8 +39,35 @@ const StatsCharts = (() => {
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     svg.setAttribute('width', '100%');
     svg.setAttribute('height', height);
+    svg.style.overflow = 'visible';
 
-    // Y axis gridlines
+    // Tooltip element
+    const tooltip = document.createElement('div');
+    tooltip.style.cssText = `
+      position: absolute; background: var(--accent); color: #fff;
+      padding: 5px 10px; border-radius: 8px; font-size: 0.75rem;
+      pointer-events: none; opacity: 0; transition: opacity 0.15s;
+      white-space: nowrap; font-family: var(--font-body);
+      transform: translate(-50%, -100%); margin-top: -6px;
+    `;
+    container.style.position = 'relative';
+    container.appendChild(tooltip);
+
+    function showTooltip(e, text) {
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX || e.touches?.[0]?.clientX || 0) - rect.left;
+      const y = (e.clientY || e.touches?.[0]?.clientY || 0) - rect.top;
+      tooltip.style.left  = `${x}px`;
+      tooltip.style.top   = `${y - 8}px`;
+      tooltip.textContent = text;
+      tooltip.style.opacity = '1';
+    }
+
+    function hideTooltip() {
+      tooltip.style.opacity = '0';
+    }
+
+    // Gridlines
     [0, 25, 50, 75, 100].forEach(pct => {
       if (pct > maxVal + 5) return;
       const y = padT + chartH - (pct / maxVal) * chartH;
@@ -58,36 +91,52 @@ const StatsCharts = (() => {
     });
 
     items.forEach((item, i) => {
-      const x       = padL + i * groupW;
+      const x       = startX + i * groupW;
       const userVal = userStats[item.key] ?? 0;
       const bandVal = bandAverages[item.key] ?? 0;
 
       // User bar
-      const userH = (userVal / maxVal) * chartH;
+      const userH   = (userVal / maxVal) * chartH;
       const userBar = document.createElementNS(svgNS, 'rect');
-      userBar.setAttribute('x', x + 4);
+      userBar.setAttribute('x', x);
       userBar.setAttribute('y', padT + chartH - userH);
       userBar.setAttribute('width', barW);
       userBar.setAttribute('height', userH);
       userBar.setAttribute('rx', '3');
       userBar.setAttribute('fill', 'var(--accent)');
       userBar.setAttribute('opacity', '0.85');
+      userBar.style.cursor = 'pointer';
       svg.appendChild(userBar);
 
-      // Band average bar
-      const bandH = (bandVal / maxVal) * chartH;
+      // Band bar
+      const bandH   = (bandVal / maxVal) * chartH;
       const bandBar = document.createElementNS(svgNS, 'rect');
-      bandBar.setAttribute('x', x + 4 + barW + 4);
+      bandBar.setAttribute('x', x + barW + gap);
       bandBar.setAttribute('y', padT + chartH - bandH);
       bandBar.setAttribute('width', barW);
       bandBar.setAttribute('height', bandH);
       bandBar.setAttribute('rx', '3');
       bandBar.setAttribute('fill', 'var(--border)');
+      bandBar.style.cursor = 'pointer';
       svg.appendChild(bandBar);
+
+      // Tooltip events — user bar
+      const userTip = `You: ${userVal}% · Avg: ${bandVal}%`;
+      userBar.addEventListener('mouseenter', e => showTooltip(e, userTip));
+      userBar.addEventListener('mouseleave', hideTooltip);
+      userBar.addEventListener('touchstart', e => { e.preventDefault(); showTooltip(e, userTip); }, { passive: false });
+      userBar.addEventListener('touchend', hideTooltip);
+
+      // Tooltip events — band bar
+      const bandTip = `Avg: ${bandVal}% · You: ${userVal}%`;
+      bandBar.addEventListener('mouseenter', e => showTooltip(e, bandTip));
+      bandBar.addEventListener('mouseleave', hideTooltip);
+      bandBar.addEventListener('touchstart', e => { e.preventDefault(); showTooltip(e, bandTip); }, { passive: false });
+      bandBar.addEventListener('touchend', hideTooltip);
 
       // Label
       const text = document.createElementNS(svgNS, 'text');
-      text.setAttribute('x', x + 4 + barW + 2);
+      text.setAttribute('x', x + barW + gap / 2);
       text.setAttribute('y', height - 8);
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('font-size', '9');
@@ -98,7 +147,7 @@ const StatsCharts = (() => {
 
     // Legend
     const legendY = height - 24;
-    const legendX = width - 120;
+    const legendX = width - 100;
 
     const r1 = document.createElementNS(svgNS, 'rect');
     r1.setAttribute('x', legendX); r1.setAttribute('y', legendY);
@@ -114,7 +163,8 @@ const StatsCharts = (() => {
 
     const r2 = document.createElementNS(svgNS, 'rect');
     r2.setAttribute('x', legendX + 40); r2.setAttribute('y', legendY);
-    r2.setAttribute('width', 10); r2.setAttribute('height', 10);
+    r2.setAttribute('width', 10); r2.setAttribute('height', r2.getAttribute('height') || 10);
+    r2.setAttribute('height', 10);
     r2.setAttribute('rx', '2'); r2.setAttribute('fill', 'var(--border)');
     svg.appendChild(r2);
 
@@ -124,7 +174,6 @@ const StatsCharts = (() => {
     t2.textContent = 'Avg';
     svg.appendChild(t2);
 
-    container.innerHTML = '';
     container.appendChild(svg);
   }
 

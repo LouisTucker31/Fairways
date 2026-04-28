@@ -17,7 +17,6 @@ const StatsUI = (() => {
     document.getElementById('statHandicap').textContent  = handicap !== null ? handicap : '—';
     document.getElementById('statRounds').textContent    = overview?.count   ?? '—';
     document.getElementById('statAvgGross').textContent  = fmt(overview?.avgGross);
-    document.getElementById('statAvgDiff').textContent   = fmt(overview?.avgDiff);
     document.getElementById('statAvgOver').textContent   = fmt(overview?.avgOverPar);
     document.getElementById('statBest').textContent      = fmt(overview?.best);
     document.getElementById('statWorst').textContent     = fmt(overview?.worst);
