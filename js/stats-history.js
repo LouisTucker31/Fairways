@@ -29,12 +29,15 @@ const StatsHistory = (() => {
         <div class="history-item-main">
           <div class="history-item-info">
             <span class="history-course">${escapeHtml(round.course)}</span>
-            <span class="history-meta">${date} · ${holes} holes${tee}</span>
+            <span class="history-meta">${date} · ${holes}${tee}</span>
           </div>
           <div class="history-item-score">
             <span class="history-gross">${round.gross}</span>
             <span class="history-overpar">${overPar}</span>
           </div>
+          <svg class="history-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <polyline points="6 8 10 12 14 8"/>
+          </svg>
         </div>
         <div class="history-item-actions hidden">
           <button class="history-edit-btn" data-id="${round.id}">Edit</button>
