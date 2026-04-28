@@ -43,7 +43,28 @@ const StatsSearch = (() => {
   function showDropdown(dropdown, courses, input, onSelect) {
     dropdown.innerHTML = '';
     if (!courses.length) {
-      dropdown.innerHTML = '<div class="stats-search-item"><span class="item-name">No courses found</span></div>';
+      const item = document.createElement('div');
+      item.className = 'stats-search-item';
+      item.innerHTML = `
+        <span class="item-name">No courses found</span>
+        <span class="item-meta">Tap to enter manually</span>
+      `;
+      item.addEventListener('click', () => {
+        // Create a manual course shell with just the name
+        const manualCourse = {
+          _source:  'manual',
+          name:     input.value.trim(),
+          allTees:  null,
+          stats18:  null,
+        };
+        input.value    = manualCourse.name;
+        selectedCourse = manualCourse;
+        hideDropdown(dropdown);
+        if (onSelect) onSelect(manualCourse);
+        // Show manual CR/SR/par fields
+        showManualFields();
+      });
+      dropdown.appendChild(item);
       dropdown.classList.remove('hidden');
       return;
     }
@@ -69,6 +90,16 @@ const StatsSearch = (() => {
 
   function hideDropdown(dropdown) {
     if (dropdown) dropdown.classList.add('hidden');
+  }
+
+  function showManualFields() {
+    const el = document.getElementById('manualCourseFields');
+    if (el) el.classList.remove('hidden');
+  }
+
+  function hideManualFields() {
+    const el = document.getElementById('manualCourseFields');
+    if (el) el.classList.add('hidden');
   }
 
   function getSelected() {

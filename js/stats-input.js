@@ -33,6 +33,10 @@ const StatsInput = (() => {
     if (el('roundHoles'))        el('roundHoles').value        = '18';
     if (el('roundDate'))         el('roundDate').value         = todayISO();
     if (el('roundGross'))        el('roundGross').value        = '';
+    if (el('manualPar'))         el('manualPar').value         = '';
+    if (el('manualCR'))          el('manualCR').value          = '';
+    if (el('manualSR'))          el('manualSR').value          = '';
+    if (el('manualCourseFields')) el('manualCourseFields').classList.add('hidden');
 
     // Step 2 fields
     ['roundGIR', 'roundFairwaysHit', 'roundFairwaysTotal',
@@ -103,6 +107,17 @@ const StatsInput = (() => {
     if (isNaN(gross) || gross < 50 || gross > 200) {
       showError('Please enter a valid gross score.'); return false;
     }
+    // Warn if no tee selected and no manual CR/SR entered
+    const manualFields = el('manualCourseFields');
+    const manualVisible = manualFields && !manualFields.classList.contains('hidden');
+    const manualCR = parseFloat(el('manualCR')?.value);
+    const manualSR = parseFloat(el('manualSR')?.value);
+    if (!selectedTee && !manualVisible) {
+      showError('Please select a course from the dropdown so CR/SR can be pulled through for your handicap.'); return false;
+    }
+    if (manualVisible && (isNaN(manualCR) || isNaN(manualSR))) {
+      showError('Please enter Course Rating and Slope Rating for handicap calculation.'); return false;
+    }
     return true;
   }
 
@@ -115,6 +130,15 @@ const StatsInput = (() => {
 
     // Get tee stats for differential
     let cr = null, sr = null, par = null;
+
+    // Manual course fallback
+    if (!selectedTee && document.getElementById('manualCourseFields') &&
+        !document.getElementById('manualCourseFields').classList.contains('hidden')) {
+      par = parseFloat(document.getElementById('manualPar')?.value) || null;
+      cr  = parseFloat(document.getElementById('manualCR')?.value)  || null;
+      sr  = parseFloat(document.getElementById('manualSR')?.value)  || null;
+    }
+
     if (selectedTee) {
       if (holes === 'front9') {
         cr  = selectedTee.front_course_rating || selectedTee.course_rating / 2;

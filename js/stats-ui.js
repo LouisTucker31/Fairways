@@ -5,7 +5,8 @@ const StatsUI = (() => {
     if (direction === 'up')     return '<span class="trend trend--up">↗</span>';
     if (direction === 'down')   return '<span class="trend trend--down">↘</span>';
     if (direction === 'steady') return '<span class="trend trend--steady">→</span>';
-    return '<span class="trend trend--dash">—</span>';
+    if (direction === 'dash')   return '<span class="trend trend--dash" style="opacity:0.3">–</span>';
+    return '';
   }
 
   function fmt(val, suffix = '') {

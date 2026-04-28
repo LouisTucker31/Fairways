@@ -286,7 +286,8 @@
   margin-bottom: 0;
 }
 
-.field-input {
+.field-input,
+.input-pair .field-input {
   text-align: left;
 }
 
